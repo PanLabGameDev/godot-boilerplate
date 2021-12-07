@@ -3,7 +3,7 @@ on: push
 
 env:
   GODOT_VERSION: 3.4
-  EXPORT_NAME: schneeflock
+  EXPORT_NAME: godot
 
 jobs:
   export-windows:
@@ -30,6 +30,7 @@ jobs:
         with:
           name: windows
           path: build/windows
+          retention-days: 2
 
   export-linux:
     name: Linux Export
@@ -55,6 +56,7 @@ jobs:
         with:
           name: linux
           path: build/linux
+          retention-days: 2
 
   export-web:
     name: Web Export
@@ -80,6 +82,7 @@ jobs:
         with:
           name: web
           path: build/web
+          retention-days: 2
       # Installing rsync is needed in order to deploy to GitHub Pages. Without it, the build will fail.
       - name: Install rsync 📚
         run: |
@@ -115,3 +118,4 @@ jobs:
         with:
           name: mac
           path: build/mac
+          retention-days: 2
