@@ -51,7 +51,7 @@ jobs:
       - name: use custom editor settings
         run: |
           mkdir -p ~/.config/godot
-          cp editor_settings-3.tres ~/.config/godot/
+          cp godot/editor_settings-3.tres ~/.config/godot/
 
       - name: export game
         # Use latest version (see releases for all versions)
