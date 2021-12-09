@@ -5,6 +5,17 @@
 
 This is a boilerplate repository for any godot v3.4 game
 
+# Add add repository as upstream
+
+```
+# add upstream
+git remote add upstream git@github.com:PanLabGameDev/godot-boilerplate.git
+# verify
+git remote -vv
+# merge latest changes
+git merge upstream main
+```
+
 # Android / APK Export
 
 - Create your own keystore:
