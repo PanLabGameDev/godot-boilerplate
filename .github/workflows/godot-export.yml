@@ -69,8 +69,8 @@ jobs:
         uses: firebelley/godot-export@v3.0.0
         with:
           # Base version. Patch versions are incremented when this action runs.
-          # base_version: 0.0.1
-          base_version: ${{ steps.tag_version.outputs.TAG_VERSION}}
+          base_version: 0.0.1
+          # base_version: ${{ steps.tag_version.outputs.TAG_VERSION}}
           # Defining all the required inputs
           # I used the latest version of Godot in this example
           godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/3.4/Godot_v3.4-stable_linux_headless.64.zip
