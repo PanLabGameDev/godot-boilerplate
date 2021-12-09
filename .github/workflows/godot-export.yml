@@ -28,7 +28,7 @@ jobs:
       # multiarch needs to be enabled first - add i386 arch
       - name: Update apt
         run: |
-          sudo dpkg --add-architecture i386
+          # sudo dpkg --add-architecture i386
           sudo apt-get update
 
       # Does not work due to win32 install
