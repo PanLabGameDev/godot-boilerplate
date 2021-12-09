@@ -25,9 +25,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      # multiarch needs to be enabled first - add i386 arch
       - name: Update apt
         run: |
+          sudo dpkg --add-architecture i386
           sudo apt-get update
+
+      # Does not work due to win32 install
+      # - name: install wine
+      #   id: wine_install
+      #   run: |
+      #     sudo apt install -y wine64 wine32:i386 libwine:i386
+      #     echo ::set-output name=WINE_PATH::$(which wine64)
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -41,15 +50,6 @@ jobs:
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" >> android.keystore.asc
           gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_PASS }}" --batch android.keystore.asc > android.keystore
-
-      #  multiarch needs to be enabled first.  as root, please
-      - name: install wine
-        id: wine_install
-        run: |
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt install -y wine64 wine32:i386 libwine:i386
-          echo ::set-output name=WINE_PATH::$(which wine64)
 
       - name: Install rsync 📚
         run: |
@@ -80,7 +80,7 @@ jobs:
           generate_release_notes: true
           create_release: true
           # relative_export_path: "build"
-          wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
+          # wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
