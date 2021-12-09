@@ -76,7 +76,7 @@ jobs:
           relative_project_path: ./godot
           archive_single_release_output: false
           # export_debug: false
-          export_debug: true
+          export_debug: false
           archive_export_output: true
           generate_release_notes: true
           create_release: true
@@ -88,11 +88,11 @@ jobs:
 
       - name: Show build folder
         run: |
-          ls -lha build
+          ls -lha godot/build
 
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: build/web # The folder the action should deploy.
+          FOLDER: godot/build/web # The folder the action should deploy.
