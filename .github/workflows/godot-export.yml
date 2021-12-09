@@ -89,13 +89,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Show build folder
-        run: |
-          ls -lha godot/build
-
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: godot/build/web # The folder the action should deploy.
+          FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
