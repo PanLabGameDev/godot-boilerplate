@@ -38,11 +38,12 @@ jobs:
       #     sudo apt install -y wine64 wine32:i386 libwine:i386
       #     echo ::set-output name=WINE_PATH::$(which wine64)
 
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         # uses: actions/setup-java@v1
         uses: actions/setup-java@v2
         with:
           # java-version: 1.8
+          distribution: "temurin"
           java-version: "17"
 
       - name: Setup Android SDK
