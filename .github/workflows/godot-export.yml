@@ -46,7 +46,8 @@ jobs:
       - name: install wine
         id: wine_install
         run: |
-          sudo dpkg --add-architecture i386 && apt-get update
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
           sudo apt install -y wine64 wine32
           echo ::set-output name=WINE_PATH::$(which wine64)
 
