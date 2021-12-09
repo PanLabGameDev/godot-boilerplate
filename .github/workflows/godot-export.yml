@@ -48,7 +48,7 @@ jobs:
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt install -y wine64 wine32
+          sudo apt install -y wine64 wine32:i386 libwine:i386
           echo ::set-output name=WINE_PATH::$(which wine64)
 
       - name: Install rsync 📚
