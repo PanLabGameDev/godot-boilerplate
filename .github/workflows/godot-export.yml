@@ -75,10 +75,12 @@ jobs:
           # https://downloads.tuxfamily.org/godotengine/3.4.1/rc1/
           relative_project_path: ./godot
           archive_single_release_output: false
-          export_debug: false
+          # export_debug: false
+          export_debug: true
           archive_export_output: true
           generate_release_notes: true
           create_release: true
+          use_preset_export_path: true
           # relative_export_path: "build"
           # wine_path: ${{ steps.wine_install.outputs.WINE_PATH }}
         env:
