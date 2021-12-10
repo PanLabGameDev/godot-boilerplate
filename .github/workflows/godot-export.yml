@@ -54,7 +54,8 @@ jobs:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
         if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
-          grep -v 'platform="Android"' godot/export_presets.cfg > godot/export_presets.cfg
+          grep -v 'platform="Android"' godot/export_presets.cfg > godot/export_presets.cfg.tmp
+          mv godot/export_presets.cfg.tmp godot/export_presets.cfg
 
       - name: Prepare keystore
         env:
