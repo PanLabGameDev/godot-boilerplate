@@ -46,9 +46,6 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
       - name: Install additional software
         run: |
           sudo apt install -y rsync crudini
@@ -58,7 +55,14 @@ jobs:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
         if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
+          crudini --del godot/export_presets.cfg $(for id in {0..10}; do crudini --get --format=lines godot/export_presets.cfg preset.$id platform 2> /dev/null ; done | grep Android | grep -o 'preset\.[0-9]*').options
           crudini --del godot/export_presets.cfg $(for id in {0..10}; do crudini --get --format=lines godot/export_presets.cfg preset.$id platform 2> /dev/null ; done | grep Android | grep -o 'preset\.[0-9]*')
+
+      - name: Setup Android SDK
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+        if: ${{ env.ANDROID_KEYSTORE != '' }}
+        uses: android-actions/setup-android@v2
 
       - name: Prepare keystore
         env:
