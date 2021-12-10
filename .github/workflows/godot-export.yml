@@ -50,12 +50,16 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: Skip Android export
-        if: ${{ secrets.ANDROID_KEYSTOREXXXX == '' }}
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+        if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
           grep -v 'platform="Android"' godot/export_presets.cfg > godot/export_presets.cfg
 
       - name: Prepare keystore
-        if: ${{ secrets.ANDROID_KEYSTOREXXX != '' }}
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+        if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" >> android.keystore.asc
           gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_PASS }}" --batch android.keystore.asc > android.keystore
