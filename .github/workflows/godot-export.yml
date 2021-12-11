@@ -126,7 +126,7 @@ jobs:
 
       - name: Create zips
         env:
-          WORKER_DIR: $(pwd)
+          WORKER_DIR: ${{ github.workspace }}
         run: |
           cd /home/runner/.local/share/godot/builds/
           cd "HTML5" ; zip -r ${{ env.WORKER_DIR }}/build/html5.zip . ; cd ..
