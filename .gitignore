@@ -10,3 +10,7 @@ data_*/
 
 # build related directory
 build/
+
+# android
+*.keystore.*
+*.keystore

@@ -135,14 +135,19 @@ jobs:
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
 
+      - name: let me see those files
+        run: |
+          ls -lha /home/runner/.local/share/godot/builds
+          pwd
+
       - name: Zip HTML Folder
         run: |
           cd /home/runner/.local/share/godot/builds/
-          cd "Android" ; zip -r ../android.zip .
-          cd "HTML5" ; zip -r ../html5.zip .
-          cd "LinuxX11" ; zip -r ../linux.zip .
-          cd "Mac OSX" ; zip -r ../macosx.zip .
-          cd "Windows Desktop" ; zip -r ../windows.zip .
+          cd "Android" ; zip -r ../android.zip . ; cd ..
+          cd "HTML5" ; zip -r ../html5.zip . ; cd ..
+          cd "LinuxX11" ; zip -r ../linux.zip . ; cd ..
+          cd "Mac OSX" ; zip -r ../macosx.zip . ; cd ..
+          cd "Windows Desktop" ; zip -r ../windows.zip . ; cd ..
 
       - name: let me see those files
         run: |
