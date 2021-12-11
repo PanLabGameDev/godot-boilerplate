@@ -105,9 +105,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: let me see those files
-        run: ls -lha /home/runner/.local/share/godot/builds
-
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
@@ -117,6 +114,14 @@ jobs:
 
       - name: Zip HTML Folder
         run: zip -r /home/runner/.local/share/godot/builds/html5.zip /home/runner/.local/share/godot/builds/HTML5/
+
+      - name: let me see those files
+        run: ls -lha /home/runner/.local/share/godot/builds
+        # Android
+        # HTML5
+        # LinuxX11
+        # Mac OSX
+        # Windows Desktop
 
       - name: Deploy itch.io - html5
         env:
