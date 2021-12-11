@@ -145,7 +145,7 @@ jobs:
         run: |
           CURRENT_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=0 --max-count=1`)
           echo ${CURRENT_TAG}
-          echo ::set-output version=::${CURRENT_TAG}
+          echo ::set-output name=version::${CURRENT_TAG}
 
       - name: Deploy itch.io - windows
         env:
