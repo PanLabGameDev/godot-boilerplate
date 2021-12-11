@@ -115,22 +115,56 @@ jobs:
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
 
+      - name: Zip HTML Folder
+        run: zip -r /home/runner/.local/share/godot/builds/html5.zip /home/runner/.local/share/godot/builds/HTML5/
+
+      - name: Deploy itch.io - html5
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: HTML
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: /home/runner/.local/share/godot/builds/html5.zip
+        if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+
       - name: Deploy itch.io - windows
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: windows
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/Windows/
+          PACKAGE: /home/runner/.local/share/godot/builds/Windows Desktop/
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
-      - name: Deploy itch.io - html5
+      - name: Deploy itch.io - linux
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
-          CHANNEL: HTML5
+          CHANNEL: linux
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/HTML5/
+          PACKAGE: /home/runner/.local/share/godot/builds/LinuxX11/
         if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+
+      - name: Deploy itch.io - mac
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: mac
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: /home/runner/.local/share/godot/builds/Mac OSX/
+        if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+
+      - name: Deploy itch.io - android
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: android
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: /home/runner/.local/share/godot/builds/Android/
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE == '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
