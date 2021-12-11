@@ -31,7 +31,7 @@ jobs:
           # sudo dpkg --add-architecture i386
           sudo apt-get update
 
-      # Does not work due to win32 install
+      # breaks windows app, does not change icon
       - name: install wine
         id: wine_install
         run: |
@@ -45,7 +45,7 @@ jobs:
 
       - name: Skip Android export
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
           crudini --del godot/export_presets.cfg $(for id in {0..10}; do crudini --get --format=lines godot/export_presets.cfg preset.$id platform 2> /dev/null ; done | grep Android | grep -o 'preset\.[0-9]*').options
@@ -54,7 +54,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         with:
           distribution: "temurin"
@@ -62,13 +62,13 @@ jobs:
 
       - name: Setup Android SDK
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         uses: android-actions/setup-android@v2
 
       - name: Prepare keystore
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" >> android.keystore.asc
@@ -113,10 +113,14 @@ jobs:
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
 
       - name: Zip HTML Folder
-        run: zip -r /home/runner/.local/share/godot/builds/html5.zip /home/runner/.local/share/godot/builds/HTML5/
+        run: |
+          cd /home/runner/.local/share/godot/builds/
+          zip -r html5.zip HTML5/
 
       - name: let me see those files
-        run: ls -lha /home/runner/.local/share/godot/builds
+        run: |
+          ls -lha /home/runner/.local/share/godot/builds
+          pwd
         # Android
         # HTML5
         # LinuxX11
@@ -129,7 +133,7 @@ jobs:
           CHANNEL: HTML
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/html5.zip
+          PACKAGE: html5.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -170,6 +174,6 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/Android/
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE == '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
