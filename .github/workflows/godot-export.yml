@@ -138,29 +138,32 @@ jobs:
       - name: let me see those files
         run: |
           ls -lha /home/runner/.local/share/godot/builds
+          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
           pwd
 
       - name: Create zips
         run: |
+          export WORKER_DIR=$(pwd)
           cd /home/runner/.local/share/godot/builds/
-          cd "HTML5" ; zip -r ../html5.zip . ; cd ..
-          cd "LinuxX11" ; zip -r ../linux.zip . ; cd ..
-          cd "Mac OSX" ; zip -r ../macosx.zip . ; cd ..
-          cd "Windows Desktop" ; zip -r ../windows.zip . ; cd ..
+          cd "HTML5" ; zip -r ${WORKER_DIR}/build/html5.zip . ; cd ..
+          cd "LinuxX11" ; zip -r ${WORKER_DIR}/build/linux.zip . ; cd ..
+          cd "Mac OSX" ; zip -r ${WORKER_DIR}/build/macosx.zip . ; cd ..
+          cd "Windows Desktop" ; zip -r ${WORKER_DIR}/build/windows.zip . ; cd ..
 
       - name: Create android zips
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
+          echo $WORKER_DIR
           cd /home/runner/.local/share/godot/builds/
-          cd "Android" ; zip -r ../android.zip . ; cd ..
+          cd "Android" ; zip -r ${WORKER_DIR}/build/android.zip . ; cd ..
 
       - name: let me see those files
         run: |
           ls -lha /home/runner/.local/share/godot/builds
           ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate
-          ls -lha /home/runner/work/godot-boilerplate/
+          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
           pwd
         # pwd: /home/runner/work/godot-boilerplate/godot-boilerplate
         # Android
@@ -175,7 +178,7 @@ jobs:
           CHANNEL: windows
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: windows.zip
+          PACKAGE: build/windows.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -185,7 +188,7 @@ jobs:
           CHANNEL: HTML
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: html5.zip
+          PACKAGE: build/html5.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -195,17 +198,17 @@ jobs:
           CHANNEL: linux
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: linux.zip
+          PACKAGE: build/linux.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
-      - name: Deploy itch.io - mac
+      - name: Deploy itch.io - macosx
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: mac
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: macosx.zip
+          PACKAGE: build/macosx.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -215,7 +218,7 @@ jobs:
           CHANNEL: android
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: android.zip
+          PACKAGE: build/android.zip
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE == '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
