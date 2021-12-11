@@ -141,8 +141,11 @@ jobs:
           cd "Android" ; zip -r ${{ github.workspace }}/build/android.zip . ; cd ..
 
       - id: get_version
-        name: Get latest Version
-        uses: battila7/get-version-action@v2
+        name: Get git tag version
+        run: |
+          CURRENT_TAG=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=0 --max-count=1`)
+          echo ${CURRENT_TAG}
+          echo ::set-output version=::${CURRENT_TAG}
 
       - name: Deploy itch.io - windows
         env:
@@ -151,7 +154,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/windows.zip
-          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          VERSION: ${{ steps.get_version.outputs.version }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -162,7 +165,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/html5.zip
-          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          VERSION: ${{ steps.get_version.outputs.version }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -173,7 +176,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/linux.zip
-          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          VERSION: ${{ steps.get_version.outputs.version }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -184,7 +187,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/macosx.zip
-          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          VERSION: ${{ steps.get_version.outputs.version }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -195,7 +198,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/android.zip
-          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          VERSION: ${{ steps.get_version.outputs.version }}
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
