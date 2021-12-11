@@ -122,7 +122,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: HTML
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/html5.zip
         if: ${{ env.ITCH_USER != '' }}
@@ -132,7 +132,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: windows
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/Windows Desktop/
         if: ${{ env.ITCH_USER != '' }}
@@ -142,7 +142,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: linux
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/LinuxX11/
         if: ${{ env.ITCH_USER != '' }}
@@ -152,7 +152,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: mac
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/Mac OSX/
         if: ${{ env.ITCH_USER != '' }}
@@ -162,7 +162,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
           CHANNEL: android
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/Android/
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
