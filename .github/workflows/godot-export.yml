@@ -125,23 +125,20 @@ jobs:
       # Windows Desktop
 
       - name: Create zips
-        env:
-          WORKER_DIR: ${{ github.workspace }}
         run: |
           cd /home/runner/.local/share/godot/builds/
-          cd "HTML5" ; zip -r ${{ env.WORKER_DIR }}/build/html5.zip . ; cd ..
-          cd "LinuxX11" ; zip -r ${{ env.WORKER_DIR }}/build/linux.zip . ; cd ..
-          cd "Mac OSX" ; zip -r ${{ env.WORKER_DIR }}/build/macosx.zip . ; cd ..
-          cd "Windows Desktop" ; zip -r ${{ env.WORKER_DIR }}/build/windows.zip . ; cd ..
+          cd "HTML5" ; zip -r ${{ github.workspace }}/build/html5.zip . ; cd ..
+          cd "LinuxX11" ; zip -r ${{ github.workspace }}/build/linux.zip . ; cd ..
+          cd "Mac OSX" ; zip -r ${{ github.workspace }}/build/macosx.zip . ; cd ..
+          cd "Windows Desktop" ; zip -r ${{ github.workspace }}/build/windows.zip . ; cd ..
 
       - name: Create android zips
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
-          echo ${{ env.WORKER_DIR }}
           cd /home/runner/.local/share/godot/builds/
-          cd "Android" ; zip -r ${{ env.WORKER_DIR }}/build/android.zip . ; cd ..
+          cd "Android" ; zip -r ${{ github.workspace }}/build/android.zip . ; cd ..
 
       - id: get_version
         name: Get latest Version
