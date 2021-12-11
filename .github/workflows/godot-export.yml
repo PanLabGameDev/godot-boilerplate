@@ -45,7 +45,7 @@ jobs:
 
       - name: Skip Android export
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
           crudini --del godot/export_presets.cfg $(for id in {0..10}; do crudini --get --format=lines godot/export_presets.cfg preset.$id platform 2> /dev/null ; done | grep Android | grep -o 'preset\.[0-9]*').options
@@ -54,7 +54,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         with:
           distribution: "temurin"
@@ -62,13 +62,13 @@ jobs:
 
       - name: Setup Android SDK
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         uses: android-actions/setup-android@v2
 
       - name: Prepare keystore
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" >> android.keystore.asc
@@ -105,29 +105,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # # job id, can be anything
-      # deploy:
-      #   # Always use ubuntu-latest for this action
-      #   runs-on: ubuntu-latest
-      #   # Job name, can be anything
-      #   name: Deploy Job
-
-      #   steps:
-      # - name: download windows
-      #   uses: dsaltares/fetch-gh-release-asset@master
-      #   with:
-      #     file: plague-windows.zip
-      #   env:
-      #     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      # - name: release windows
-      #   uses: josephbmanley/butler-publish-itchio-action@master
-      #   env:
-      #     BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-      #     CHANNEL: windows
-      #     ITCH_GAME: plague
-      #     ITCH_USER: dsaltares
-      #     PACKAGE: plague-windows.zip
-
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
@@ -135,11 +112,17 @@ jobs:
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
 
-      - name: let me see those files
-        run: |
-          ls -lha /home/runner/.local/share/godot/builds
-          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
-          pwd
+      # - name: let me see those files
+      #   run: |
+      #     ls -lha /home/runner/.local/share/godot/builds
+      #     ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
+      #     pwd
+      # pwd: /home/runner/work/godot-boilerplate/godot-boilerplate
+      # Android
+      # HTML5
+      # LinuxX11
+      # Mac OSX
+      # Windows Desktop
 
       - name: Create zips
         run: |
@@ -152,25 +135,16 @@ jobs:
 
       - name: Create android zips
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
           echo $WORKER_DIR
           cd /home/runner/.local/share/godot/builds/
           cd "Android" ; zip -r ${WORKER_DIR}/build/android.zip . ; cd ..
 
-      - name: let me see those files
-        run: |
-          ls -lha /home/runner/.local/share/godot/builds
-          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate
-          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
-          pwd
-        # pwd: /home/runner/work/godot-boilerplate/godot-boilerplate
-        # Android
-        # HTML5
-        # LinuxX11
-        # Mac OSX
-        # Windows Desktop
+      - id: get_version
+        name: Get latest Version
+        uses: battila7/get-version-action@v2
 
       - name: Deploy itch.io - windows
         env:
@@ -179,6 +153,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/windows.zip
+          VERSION: ${{ steps.get_version.outputs.version-without-v }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -189,6 +164,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/html5.zip
+          VERSION: ${{ steps.get_version.outputs.version-without-v }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -199,6 +175,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/linux.zip
+          VERSION: ${{ steps.get_version.outputs.version-without-v }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -209,6 +186,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/macosx.zip
+          VERSION: ${{ steps.get_version.outputs.version-without-v }}
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -219,6 +197,7 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: build/android.zip
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
-        if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE == '' }}
+          VERSION: ${{ steps.get_version.outputs.version-without-v }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
