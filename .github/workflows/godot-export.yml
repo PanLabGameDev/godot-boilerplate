@@ -11,11 +11,11 @@ on:
 
 jobs:
   # job id, can be anything
-  export_game:
+  export:
     # Always use ubuntu-latest for this action
     runs-on: ubuntu-latest
     # Job name, can be anything
-    name: Export godot Job
+    name: Export Job
     steps:
       # Always include the checkout step so that
       # your project is available for Godot to export
@@ -105,6 +105,29 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # # job id, can be anything
+      # deploy:
+      #   # Always use ubuntu-latest for this action
+      #   runs-on: ubuntu-latest
+      #   # Job name, can be anything
+      #   name: Deploy Job
+
+      #   steps:
+      # - name: download windows
+      #   uses: dsaltares/fetch-gh-release-asset@master
+      #   with:
+      #     file: plague-windows.zip
+      #   env:
+      #     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      # - name: release windows
+      #   uses: josephbmanley/butler-publish-itchio-action@master
+      #   env:
+      #     BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+      #     CHANNEL: windows
+      #     ITCH_GAME: plague
+      #     ITCH_USER: dsaltares
+      #     PACKAGE: plague-windows.zip
+
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
@@ -115,12 +138,19 @@ jobs:
       - name: Zip HTML Folder
         run: |
           cd /home/runner/.local/share/godot/builds/
-          zip -r html5.zip HTML5/
+          cd "Android" ; zip -r ../android.zip .
+          cd "HTML5" ; zip -r ../html5.zip .
+          cd "LinuxX11" ; zip -r ../linux.zip .
+          cd "Mac OSX" ; zip -r ../macosx.zip .
+          cd "Windows Desktop" ; zip -r ../windows.zip .
 
       - name: let me see those files
         run: |
           ls -lha /home/runner/.local/share/godot/builds
+          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate
+          ls -lha /home/runner/work/godot-boilerplate/
           pwd
+        # pwd: /home/runner/work/godot-boilerplate/godot-boilerplate
         # Android
         # HTML5
         # LinuxX11
@@ -133,7 +163,7 @@ jobs:
           CHANNEL: windows
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/Windows Desktop/
+          PACKAGE: windows.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -153,7 +183,7 @@ jobs:
           CHANNEL: linux
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/LinuxX11/
+          PACKAGE: linux.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -163,7 +193,7 @@ jobs:
           CHANNEL: mac
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/Mac OSX/
+          PACKAGE: macosx.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
@@ -173,7 +203,7 @@ jobs:
           CHANNEL: android
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: /home/runner/.local/share/godot/builds/Android/
+          PACKAGE: android.zip
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORExx }}
         if: ${{ env.ITCH_USER != '' && env.ANDROID_KEYSTORE == '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
