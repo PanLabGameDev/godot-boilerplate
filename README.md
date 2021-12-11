@@ -31,9 +31,23 @@ gpg -c --armor android.keystore
 ```
 
 - open the file `android.keystore.asc` in your text editor.
-- Go to github repository > Settings > Secrets > [New Repository Secret]
-- Name it: ANDROID_KEYSTORE
+- Go to your github repository > Settings > Secrets: **New Repository Secret**
+- Name it: **ANDROID_KEYSTORE**
 - Set the value to the content of that .asc file (including `-----BEGIN PGP MESSAGE-----...`)
-- Create another Secret:
-- Name it: ANDROID_KEYSTORE_PASS
+- Create another secret and name it: **ANDROID_KEYSTORE_PASS**
 - Set the value to the password you have chosen when asked by gpg.
+
+# itch.io Export
+
+- Create an account on itch.io:
+- Create a new project: https://itch.io/game/new
+- Give it a proper name - you can leave the rest empty and update later
+- Go to your settings > Api Keys: https://itch.io/user/settings/api-keys
+- Click **Generate new API key** and copy the key.
+- got to github repository > Settings > Secrets: **New Repository Secret**
+- Name it: **ITCHIO_API_KEY**
+- Set the API key as content.
+- Create another secret and name: **ITCHIO_USER**
+- Set your username as content.
+- Create another secret and name: **ITCHIO_GAME**
+- Set the name of your game as content.

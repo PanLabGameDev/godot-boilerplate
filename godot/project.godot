@@ -11,8 +11,11 @@ config_version=4
 [application]
 
 config/name="Game"
+config/description="A game made in godot using the PanLab boilerplate."
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
+config/macos_native_icon="res://icon.icns"
+config/windows_native_icon="res://icon.ico"
 
 [physics]
 

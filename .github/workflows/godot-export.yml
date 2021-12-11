@@ -45,7 +45,7 @@ jobs:
 
       - name: Skip Android export
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE == '' }}
         run: |
           crudini --del godot/export_presets.cfg $(for id in {0..10}; do crudini --get --format=lines godot/export_presets.cfg preset.$id platform 2> /dev/null ; done | grep Android | grep -o 'preset\.[0-9]*').options
@@ -54,7 +54,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         with:
           distribution: "temurin"
@@ -62,13 +62,13 @@ jobs:
 
       - name: Setup Android SDK
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         uses: android-actions/setup-android@v2
 
       - name: Prepare keystore
         env:
-          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTOREXXX }}
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         if: ${{ env.ANDROID_KEYSTORE != '' }}
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE }}" >> android.keystore.asc
@@ -105,9 +105,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: let me see those files
+        run: ls -lha /home/runner/.local/share/godot/builds
+
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
+
+      - name: Deploy itch.io - windows
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: windows
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: /home/runner/.local/share/godot/builds/Windows/
+        if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+
+      - name: Deploy itch.io - html5
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: HTML5
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}2
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: /home/runner/.local/share/godot/builds/HTML5/
+        if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
