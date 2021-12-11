@@ -80,7 +80,7 @@ jobs:
           mkdir -p ~/.config/godot
           cp godot/editor_settings-3.tres ~/.config/godot/
 
-      - name: export game
+      - name: export godot
         # Use latest version (see releases for all versions)
         uses: firebelley/godot-export@v3.0.0
         with:
@@ -127,16 +127,6 @@ jobs:
         # Mac OSX
         # Windows Desktop
 
-      - name: Deploy itch.io - html5
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
-          CHANNEL: HTML
-          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
-          ITCH_USER: ${{ secrets.ITCHIO_USER }}
-          PACKAGE: html5.zip
-        if: ${{ env.ITCH_USER != '' }}
-        uses: josephbmanley/butler-publish-itchio-action@master
-
       - name: Deploy itch.io - windows
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
@@ -144,6 +134,16 @@ jobs:
           ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
           ITCH_USER: ${{ secrets.ITCHIO_USER }}
           PACKAGE: /home/runner/.local/share/godot/builds/Windows Desktop/
+        if: ${{ env.ITCH_USER != '' }}
+        uses: josephbmanley/butler-publish-itchio-action@master
+
+      - name: Deploy itch.io - html5
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCHIO_API_KEY }}
+          CHANNEL: HTML
+          ITCH_GAME: ${{ secrets.ITCHIO_GAME }}
+          ITCH_USER: ${{ secrets.ITCHIO_USER }}
+          PACKAGE: html5.zip
         if: ${{ env.ITCH_USER != '' }}
         uses: josephbmanley/butler-publish-itchio-action@master
 
