@@ -27,14 +27,20 @@ git merge upstream main
 ```bash
 echo y | keytool -genkeypair -keyalg RSA -validity 20000 -dname "cn=Godot, ou=GameDev, o=PanLab, c=AT" -alias godot -keypass godotpass -storepass godotpass -keystore android.keystore
 ```
+or on windows:
+```powershell
+keytool -genkeypair -keyalg RSA -validity 20000 -dname "cn=Godot, ou=GameDev, o=PanLab, c=AT" -alias godot -keypass godotpass -storepass godotpass -keystore android.keystore
+```
 
-- make sure to set your alias and your key-/storepass accordingly in the godot `export_presets.cfg`
-- encrypt it using gpg:
+- make sure to set your alias and your key-/storepass accordingly in godot's `export_presets.cfg`
+- *keep in mind: the keystore password will be public*
+- encrypt the keystore using gpg - you will be asked for a passphrase (which will not be public):
 
 ```bash
 gpg -c --armor android.keystore
 ```
 
+- on windows install e.g. [gpg4win](https://gpg4win.org/download.html) and follow their instructions
 - open the file `android.keystore.asc` in your text editor.
 - Go to your GitHub repository > Settings > Secrets: **New Repository Secret**
 - Name it: **ANDROID_KEYSTORE**
