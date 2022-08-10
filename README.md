@@ -2,7 +2,7 @@
 
 # godot-boilerplate
 
-This is a boilerplate repository for any godot v3.4 game.
+This is a boilerplate repository for any godot game.
 
 It will automatically build **Windows, Linux, MacOSX** binaries and create an **HTML5** export for [GitHub Pages](https://panlabgamedev.github.io/godot-boilerplate/) on every push to the main branch.
 
