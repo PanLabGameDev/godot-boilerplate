@@ -87,7 +87,7 @@ jobs:
         uses: firebelley/godot-export@v5.2.0
         with:
           # Base version. Patch versions are incremented when this action runs.
-          base_version: 0.0.1
+          # base_version: 0.0.1
           # base_version: ${{ steps.tag_version.outputs.TAG_VERSION}}
           # Defining all the required inputs
           # I used the latest version of Godot in this example
@@ -99,7 +99,7 @@ jobs:
           # archive_single_release_output: false
           export_debug: false
           archive_output: true
-          generate_release_notes: true
+          # generate_release_notes: true
           # create_release: true
           use_preset_export_path: true
           # relative_export_path: "build"
