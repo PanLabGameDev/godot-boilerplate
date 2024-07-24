@@ -138,8 +138,8 @@ jobs:
         run: |
           echo "/home/runner/.local/share/godot/builds"
           ls -lha /home/runner/.local/share/godot/builds
-          echo "/home/runner/work/godot-boilerplate/godot-boilerplate/build"
-          ls -lha /home/runner/work/godot-boilerplate/godot-boilerplate/build
+          echo "content of builds"
+          ls -lha /home/runner/.local/share/godot/builds/*
           echo "github.workspace"
           ls -lha ${{ github.workspace }}
           echo "currend dir"
