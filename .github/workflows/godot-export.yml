@@ -79,11 +79,10 @@ jobs:
       # ...above this line is the workflow job setup
       - name: use custom editor settings and export credentials
         run: |
-          mkdir -p ~/.config/godot godot/.godot/
+          mkdir -p ~/.config/godot
           cp godot/editor_settings-3.tres ~/.config/godot/
-          cp godot/export_credentials.defaults ~/.config/godot/export_credentials.cfg
-          # mkdir -p ~/.config/godot godot/.godot/
-          # cp godot/export_credentials.defaults godot/.godot/export_credentials.cfg
+          mkdir -p godot/.godot/
+          cp godot/export_credentials.defaults godot/.godot/export_credentials.cfg
 
       - name: export godot
         # Use latest version (see releases for all versions)
