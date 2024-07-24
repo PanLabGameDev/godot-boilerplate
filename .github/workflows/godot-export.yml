@@ -77,10 +77,13 @@ jobs:
           gpg -d --passphrase "${{ secrets.ANDROID_KEYSTORE_PASS }}" --batch android.keystore.asc > android.keystore
 
       # ...above this line is the workflow job setup
-      - name: use custom editor settings
+      - name: use custom editor settings and export credentials
         run: |
-          mkdir -p ~/.config/godot
+          mkdir -p ~/.config/godot godot/.godot/
           cp godot/editor_settings-3.tres ~/.config/godot/
+          cp godot/export_credentials.defaults ~/.config/godot/export_credentials.cfg
+          # mkdir -p ~/.config/godot godot/.godot/
+          # cp godot/export_credentials.defaults godot/.godot/export_credentials.cfg
 
       - name: export godot
         # Use latest version (see releases for all versions)
@@ -107,7 +110,7 @@ jobs:
           use_godot_3: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: create release
         uses: ncipollo/release-action@v1.12.0
         with:
