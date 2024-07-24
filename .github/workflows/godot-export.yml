@@ -85,6 +85,7 @@ jobs:
           cp godot/export_credentials.defaults godot/.godot/export_credentials.cfg
 
       - name: export godot
+        id: export
         # Use latest version (see releases for all versions)
         uses: firebelley/godot-export@v5.2.1
         with:
@@ -134,16 +135,16 @@ jobs:
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
 
-      - name: let me see those files
-        run: |
-          echo "/home/runner/.local/share/godot/builds"
-          ls -lha /home/runner/.local/share/godot/builds
-          echo "content of builds"
-          ls -lha /home/runner/.local/share/godot/builds/*
-          echo "github.workspace"
-          ls -lha ${{ github.workspace }}
-          echo "currend dir"
-          pwd
+      # - name: let me see those files
+      #   run: |
+      #     echo "/home/runner/.local/share/godot/builds"
+      #     ls -lha /home/runner/.local/share/godot/builds
+      #     echo "content of builds"
+      #     ls -lha /home/runner/.local/share/godot/builds/*
+      #     echo "github.workspace"
+      #     ls -lha ${{ github.workspace }}
+      #     echo "current dir"
+      #     pwd
       # pwd: /home/runner/work/godot-boilerplate/godot-boilerplate
       # Android
       # HTML5
