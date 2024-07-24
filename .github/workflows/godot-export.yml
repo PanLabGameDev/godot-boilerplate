@@ -110,6 +110,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Workaround for SharedArrayBuffer support on GitHub Pages
+      # See: https://github.com/godotengine/godot-proposals/issues/6616
+      # See: https://github.com/godotengine/godot-docs/issues/7084
+      - run: |
+          cd /home/runner/.local/share/godot/builds/HTML5/
+          curl -fsSL https://github.com/gzuidhof/coi-serviceworker/raw/master/coi-serviceworker.js > coi-serviceworker.js
+          sed -i 's#\(		<script src="index.js"></script>\)#		<script src="coi-serviceworker.js"></script>\n\1#g' index.html
+
       - name: create release
         uses: ncipollo/release-action@v1.12.0
         with:
@@ -139,11 +147,12 @@ jobs:
 
       - name: Create zips
         run: |
+          mkdir -p ${{ github.workspace }}/build
           cd /home/runner/.local/share/godot/builds/
-          cd "HTML5" ; zip -r ${{ github.workspace }}/build/html5.zip . ; cd ..
-          cd "LinuxX11" ; zip -r ${{ github.workspace }}/build/linux.zip . ; cd ..
-          cd "Mac OSX" ; zip -r ${{ github.workspace }}/build/macosx.zip . ; cd ..
-          cd "Windows Desktop" ; zip -r ${{ github.workspace }}/build/windows.zip . ; cd ..
+          cd "html5" ; zip -r ${{ github.workspace }}/build/html5.zip . ; cd ..
+          cd "linux" ; zip -r ${{ github.workspace }}/build/linux.zip . ; cd ..
+          cd "macosx" ; zip -r ${{ github.workspace }}/build/macosx.zip . ; cd ..
+          cd "windows" ; zip -r ${{ github.workspace }}/build/windows.zip . ; cd ..
 
       - name: Create android zips
         env:
