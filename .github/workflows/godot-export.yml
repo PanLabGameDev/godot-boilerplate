@@ -87,7 +87,7 @@ jobs:
       - name: export godot
         id: export
         # Use latest version (see releases for all versions)
-        uses: firebelley/godot-export@v7
+        uses: firebelley/godot-export@v7.0.0
         with:
           # Base version. Patch versions are incremented when this action runs.
           # base_version: 0.0.1
