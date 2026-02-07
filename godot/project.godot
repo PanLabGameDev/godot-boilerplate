@@ -13,18 +13,19 @@ config_version=5
 config/name="Game"
 config/description="A game made in godot using the PanLab boilerplate."
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.2")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.png"
 config/macos_native_icon="res://icon.icns"
 config/windows_native_icon="res://icon.ico"
 
 [physics]
 
+3d/physics_engine="Jolt Physics"
 common/enable_pause_aware_picking=true
 
 [rendering]
 
+rendering_device/driver.windows="d3d12"
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_environment="res://default_env.tres"
-quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
